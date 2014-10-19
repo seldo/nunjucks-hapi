@@ -1,0 +1,14 @@
+{
+  "name": "nunjucks-hapi",
+  "version": "1.0.0",
+  "description": "A simple wrapper to use Nunjucks templates in Hapi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Laurie Voss <github@seldo.com>",
+  "license": "ISC",
+  "dependencies": {
+    "nunjucks": "^1.1.0"
+  }
+}
