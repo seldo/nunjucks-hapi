@@ -1,4 +1,4 @@
-var Nunjucks = require('Nunjucks')
+var Nunjucks = require('nunjucks')
 
 Nunjucks.configure()
 
