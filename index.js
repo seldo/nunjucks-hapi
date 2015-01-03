@@ -1,7 +1,7 @@
 var Nunjucks = require('nunjucks')
 var _ = require('lodash')
 
-var nunjucksEnv = undefined
+var env = undefined
 
 var wrapper = {}
 
@@ -9,17 +9,16 @@ var wrapper = {}
 wrapper.compile = function(template,options) {
   // we get the full template string from Hapi and pass it to Nunjucks
   // Nunjucks will pull in any includes and blocks itself
-  var t = Nunjucks.compile(template,nunjucksEnv)
+  var t = Nunjucks.compile(template,env)
   return function(context,options) {
     return t.render(context)
   }
 }
 
-// sets the env Nunjucks is using; it needs to know where the views are
-// you can also add custom filters etc. to this env
-wrapper.viewEngine = function(env) {
-  nunjucksEnv = env
-  return wrapper
+// we need our compiler to know about the env so we keep a reference to it
+wrapper.configure = function(path,options) {
+  env = Nunjucks.configure(path,options)
+  return env
 }
 
 // in all other ways be exactly the same as Nunjucks

@@ -9,7 +9,8 @@ server.connection({port:5000,host:"localhost"})
 // both hapi and nunjucks need to know where to look for templates
 var viewPath = Path.join(__dirname, 'views')
 
-// configure Nunjucks; at minimum it needs the path to the views
+// to add a filter, you need to create an env
+// this means you have to explicitly set the views path
 var env = NunjucksHapi.configure(viewPath)
 
 // you can do extra stuff with Nunjucks' env if you want
@@ -20,8 +21,7 @@ env.addFilter('shorten', function(str, count) {
 // tell hapi to use NunjucksHapi as the view engine for html
 server.views({
   engines: {
-    // env is required or paths will be wrong
-    html: NunjucksHapi.viewEngine(env)
+    html: NunjucksHapi
   },
   path: viewPath
 })
@@ -32,7 +32,7 @@ server.route({
   path: '/test',
   handler: function (request, reply) {
     // pass a variable called myvariable to mytemplate
-    reply.view('mytemplate',{
+    reply.view('mytemplate2',{
       'myvariable': 'myvalue'
     })
   }
