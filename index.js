@@ -2,6 +2,7 @@ var Nunjucks = require('nunjucks')
 var _ = require('lodash')
 
 var env = undefined
+var viewPath = undefined
 
 var wrapper = {}
 
@@ -17,6 +18,7 @@ wrapper.compile = function(template,options) {
 
 // we need our compiler to know about the env so we keep a reference to it
 wrapper.configure = function(path,options) {
+  viewPath = path
   env = Nunjucks.configure(path,options)
   return env
 }

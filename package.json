@@ -4,7 +4,7 @@
   "description": "A simple wrapper to use Nunjucks templates in Hapi",
   "main": "index.js",
   "scripts": {
-    "test": "lab -c test"
+    "test": "lab -c test/tests"
   },
   "author": "Laurie Voss <github@seldo.com>",
   "license": "ISC",
@@ -17,7 +17,9 @@
     "url": "https://github.com/seldo/nunjucks-hapi.git"
   },
   "devDependencies": {
+    "code": "~1.2.1",
     "hapi": "~8.0.0",
-    "lab": "~5.1.1"
+    "lab": "~5.1.1",
+    "restify": "~2.8.4"
   }
 }
