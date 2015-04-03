@@ -30,7 +30,7 @@ server.route({
 
     // Pass a variable called myvariable to mytemplate
 
-    reply.view('mytemplate', {
+    reply.view('my-template-1', {
       'myvariable': 'myvalue'
     });
   }

@@ -8,16 +8,37 @@ var env = undefined;
 
 // This compile has the signature that hapi is expecting
 
-wrapper.compile = function (template, options) {
+wrapper.compile = function (template, options, callback) {
+
+  // Get if compile mode is async by checking if the callback is defined
+
+  var asyncCompileMode = (typeof callback === 'function');
 
   // We get the full template string from Hapi and pass it to Nunjucks
   // Nunjucks will pull in any includes and blocks itself
 
   var t = Nunjucks.compile(template, env);
 
-  return function (context, options) {
-    return t.render(context);
-  };
+  if (asyncCompileMode) {
+
+    // Render the template in the asynchronous way
+
+    var renderer = function (context, options, next) {
+
+      t.render(context, next);
+    };
+
+    return callback(null, renderer);
+
+  } else {
+
+    // Render the template in the synchronous way
+
+    return function (context, options) {
+
+      return t.render(context);
+    };
+  }
 };
 
 
