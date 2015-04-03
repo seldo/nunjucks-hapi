@@ -4,12 +4,12 @@
   "description": "A simple wrapper to use Nunjucks templates in Hapi",
   "main": "index.js",
   "scripts": {
-    "test": "lab -c test/tests"
+    "test": "lab --leaks -c test/tests"
   },
   "author": "Laurie Voss <github@seldo.com>",
   "license": "ISC",
   "dependencies": {
-    "lodash": "~2.4.1",
+    "lodash.defaults": "^3.1.0",
     "nunjucks": "^1.1.0"
   },
   "repository": {
