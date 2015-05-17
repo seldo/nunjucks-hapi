@@ -1,11 +1,10 @@
-# nunjucks-hapi
-An extremely simple wrapper to let you use Nunjucks as a Hapi templating engine.
+# hapi-nunjucks
+A simple wrapper to let you use Nunjucks as a Hapi templating engine.
+**Based on [seldo/nunjucks-hapi](https://github.com/seldo/nunjucks-hapi) project.**
 
-I looked at what Handlebars does and created a wrapper that produces an identical
-API for nunjucks. I make absolutely no representations as to its performance or
-correctness.
+[Nunjucks documentation](http://mozilla.github.io/nunjucks/api.html)
 
-I wrote this in 10 minutes and have done no testing. You're welcome!
+[Hapi documentation](http://hapijs.com/api)
 
 ## Usage
 
@@ -16,17 +15,17 @@ inheritance, inside Hapi. This assumes:
 * they have the extension "html"
 * you have a template file in there called "mytemplate"
 
-```
+```javascript
 var Hapi = require('hapi')
 var Path = require('path')
-var Nunjucks = require('nunjucks-hapi')
 
-var server = new Hapi.Server('localhost', 5000)
+var server = new Hapi.Server()
+server.connection({port:5000,host:'localhost'})
 
 // set up templates
 server.views({
   engines: {
-    html: Nunjucks
+    html: require('hapi-nunjucks')
   },
   path: Path.join(__dirname, 'views')
 })
@@ -44,4 +43,37 @@ server.route({
 
 // start server
 server.start()
+```
+
+### Using Nunjucks filters and environments
+
+If you want to go beyond the default configuration of Nunjucks, you 
+need to configure an environment. Once that's done, you can do
+anything to the environment, like add filters or custom tags via 
+extensions. This works just like the Nunjucks documentation says it
+does, with the exception that the path to templates is now **required**.
+
+The example is otherwise the same as the above
+
+```javascript
+var HapiNunjacks = require('hapi-nunjucks');
+
+// set a common view path
+var viewPath = Path.join(__dirname, 'views')
+
+var env = HapiNunjucks.configure(viewPath)
+
+// do anything you want to the env here
+env.addFilter('somefilter', function(str, count) {
+  // return some string
+})
+
+// set up templates with the same view path
+server.views({
+  engines: {
+    html: HapiNunjucks
+  },
+  path: viewPath
+})
+
 ```

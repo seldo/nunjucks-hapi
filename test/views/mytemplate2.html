@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>I'm another template.</h1>
+
+This string will be {{ 'shortened by the filter I am piping to here'|shorten }}.
+{% endblock %}
