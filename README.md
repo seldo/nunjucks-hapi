@@ -1,6 +1,5 @@
-# hapi-nunjucks
+# nunjucks-hapi
 A simple wrapper to let you use Nunjucks as a Hapi templating engine.
-**Based on [seldo/nunjucks-hapi](https://github.com/seldo/nunjucks-hapi) project.**
 
 [Nunjucks documentation](http://mozilla.github.io/nunjucks/api.html)
 
@@ -18,6 +17,7 @@ inheritance, inside Hapi. This assumes:
 ```javascript
 var Hapi = require('hapi')
 var Path = require('path')
+var NunjucksHap = require('nunjucks-hapi')
 
 var server = new Hapi.Server()
 server.connection({port:5000,host:'localhost'})
@@ -25,7 +25,7 @@ server.connection({port:5000,host:'localhost'})
 // set up templates
 server.views({
   engines: {
-    html: require('hapi-nunjucks')
+    html: NunjucksHapi
   },
   path: Path.join(__dirname, 'views')
 })
@@ -56,12 +56,12 @@ does, with the exception that the path to templates is now **required**.
 The example is otherwise the same as the above
 
 ```javascript
-var HapiNunjacks = require('hapi-nunjucks');
+var NunjucksHapi = require('nunjucks-hapi');
 
 // set a common view path
 var viewPath = Path.join(__dirname, 'views')
 
-var env = HapiNunjucks.configure(viewPath)
+var env = NunjucksHapi.configure(viewPath)
 
 // do anything you want to the env here
 env.addFilter('somefilter', function(str, count) {
@@ -71,7 +71,7 @@ env.addFilter('somefilter', function(str, count) {
 // set up templates with the same view path
 server.views({
   engines: {
-    html: HapiNunjucks
+    html: NunjucksHapi
   },
   path: viewPath
 })
