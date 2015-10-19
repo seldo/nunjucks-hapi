@@ -17,7 +17,7 @@ inheritance, inside Hapi. This assumes:
 ```javascript
 var Hapi = require('hapi')
 var Path = require('path')
-var NunjucksHap = require('nunjucks-hapi')
+var NunjucksHapi = require('nunjucks-hapi')
 
 var server = new Hapi.Server()
 server.connection({port:5000,host:'localhost'})
