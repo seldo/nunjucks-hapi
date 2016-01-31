@@ -3,29 +3,21 @@ var _defaults = require('lodash.defaults');
 
 var wrapper = {};
 
-var viewPath = undefined;
 var env = undefined;
 
-// This compile has the signature that hapi is expecting
-
-wrapper.compile = function (template, options, callback) {
+wrapper.compile = function (src, options, callback) {
 
   // Get if compile mode is async by checking if the callback is defined
-
   var asyncCompileMode = (typeof callback === 'function');
 
-  // We get the full template string from Hapi and pass it to Nunjucks
-  // Nunjucks will pull in any includes and blocks itself
-
-  var t = Nunjucks.compile(template, env);
+  // Nunjucks will know where the templates are from the environment
+  var template = Nunjucks.compile(src, env || options.environment);
 
   if (asyncCompileMode) {
 
     // Render the template in the asynchronous way
-
     var renderer = function (context, options, next) {
-
-      t.render(context, next);
+      template.render(context, next);
     };
 
     return callback(null, renderer);
@@ -33,28 +25,25 @@ wrapper.compile = function (template, options, callback) {
   } else {
 
     // Render the template in the synchronous way
-
     return function (context, options) {
-
-      return t.render(context);
+      return template.render(context);
     };
   }
-};
 
+}
 
-// We need our compiler to know about the env so we keep a reference to it
+wrapper.prepare = function (options, next) {
+  // if we've overridden our environment we use it, otherwise we go with a default
+  options.compileOptions.environment = env || Nunjucks.configure(options.path, { watch : false });
+  return next();
+}
 
+// the configure() method lets us override the environment to add filters etc
 wrapper.configure = function (path, options) {
-
-  viewPath = path;
-  env = Nunjucks.configure(path, options);
-
-  return env;
+  return env = Nunjucks.configure(path, options || { watch : false });
 };
-
 
 // In all other ways be exactly the same as Nunjucks
-
 wrapper = _defaults(wrapper, Nunjucks);
 
 exports = module.exports = wrapper;

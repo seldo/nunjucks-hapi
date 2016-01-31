@@ -1,5 +1,6 @@
 var Hapi = require('hapi');
 var Path = require('path');
+var Vision = require('vision')
 var NunjucksHapi = require('../index.js');
 
 
@@ -12,34 +13,34 @@ server.connection({
 
 
 // Tell hapi to use NunjucksHapi as the view engine for html
+server.register(Vision, function(err) {
 
-server.views({
-  engines: {
-    html: NunjucksHapi
-  },
-  path: Path.join(__dirname, 'views')
-});
+  if(err) throw err
 
+  server.views({
+    engines: {
+      html: NunjucksHapi
+    },
+    path: Path.join(__dirname, 'views')
+  });
 
-// Add the example route
+  // Add the example route
 
-server.route({
-  method: 'GET',
-  path: '/test',
-  handler: function (request, reply) {
+  server.route({
+    method: 'GET',
+    path: '/test',
+    handler: function (request, reply) {
 
-    // Pass a variable called myvariable to mytemplate
+      // Pass a variable called myvariable to mytemplate
+      reply.view('my-template-1', {
+        'myvariable': 'myvalue'
+      });
+    }
+  });
 
-    reply.view('my-template-1', {
-      'myvariable': 'myvalue'
-    });
-  }
-});
+  // Start hapi
+  server.start(function () {
+    console.log('Listening on port 5000');
+  });
 
-
-// Start hapi
-
-server.start(function () {
-
-  console.log('Listening on port 5000');
-});
+})
