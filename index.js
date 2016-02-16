@@ -11,7 +11,7 @@ wrapper.compile = function (src, options, callback) {
   var asyncCompileMode = (typeof callback === 'function');
 
   // Nunjucks will know where the templates are from the environment
-  var template = Nunjucks.compile(src, env || options.environment);
+  var template = Nunjucks.compile(src, env || options.environment, (Object.hasOwnProperty(options,'filename') ? options.filename : null) );
 
   if (asyncCompileMode) {
 
